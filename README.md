@@ -7,3 +7,14 @@ With a feature rich graphics user interface (GUI) such as RStudio and numerous p
 ##Plan
 R has many packages that could mimic the features presented in BM. For example, _deSolve_ can be used as the main engine for solving the differential equations. _ggplot2_ can be used for visualising the output and _rJava_ [http://rforge.net/rJava/](http://rforge.net/rJava/) or _rClr_ [https://rclr.codeplex.com/](https://rclr.codeplex.com/) can help in building GUI. _stats_ includes some functions, i.e., _optim_, _lm_ and _nlm_, which can be used in the parameter estimations. We will use these packages to build some wrapper functions whose inputs are about the same as BM and can output similar results to BM. 
 
+###Install maemod
+library("devtools")
+install_github("slphyx/maemod")
+
+
+###Using maemod
+
+
+
+
+
