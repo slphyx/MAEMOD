@@ -17,6 +17,7 @@ install_github("slphyx/maemod")
 
 ####Ex1
 ```{r example}
+#define the system
 mysystem <- "
 !Equations
 dX <- bonemarrow - deathuninfected*X - infectionrate*X*S
@@ -44,6 +45,7 @@ c(dX,dY,dS),U=U
 "
 ```
 ```{r solving the system numerically}
+#use maemod.ode to the solve the system
 out <- maemod.ode(input.text = mysystem,timegrid = seq(0,600,0.1))
 
 head(out)
