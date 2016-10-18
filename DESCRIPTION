@@ -1,9 +1,9 @@
 Package: maemod
 Type: Package
 Title: A simple version of deSolve for a person who is not trained, qualified, or experienced in Differential Equations.
-Version: 0.0.0.0.1
+Version: 0.0.0.1
 Author: Sompob Saralamba
-Maintainer: Sompob Saralamba <sompob@tropmedres.ac>
+Maintainer: Sompob Saralamba <saralamba@gmail.com>
 Description: Zzzz...
 Depends: R (>= 2.15.0), deSolve
 Imports: deSolve
