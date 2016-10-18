@@ -9,10 +9,55 @@ R has many packages that could mimic the features presented in BM. For example, 
 
 ###Install maemod
 library("devtools")
+
 install_github("slphyx/maemod")
 
 
 ###Using maemod
+
+###Using maemod
+
+####Ex1
+
+mysystem <- "
+!Equations
+dX <- bonemarrow - deathuninfected*X - infectionrate*X*S
+dY <- infectionrate*X*S - deathinfected*Y
+dS <- deathinfected*Y*nmerozoites - deathmerozoite*S - infectionrate*X*S
+U <- X+Y
+
+!Parameters   
+bonemarrow = 1,
+deathuninfected = 0.00833,
+infectionrate = 0.1,
+deathinfected = 0.2,
+nmerozoites = 16,
+deathmerozoite = 72
+
+!Inits      #initial value of each compartment
+X=120, Y=0, S=0
+
+!Outputs    #list of the outputs
+c(dX,dY,dS),U=U
+
+!ExtraFunctions   
+
+!MAEMOD_End
+"
+
+out <- maemod.ode(input.text = mysystem,timegrid = seq(0,600,0.1))
+
+
+head(out)
+     time        X Y S        U
+[1,]  0.0 120.0000 0 0 120.0000
+[2,]  0.1 120.0000 0 0 120.0000
+[3,]  0.2 120.0001 0 0 120.0001
+[4,]  0.3 120.0001 0 0 120.0001
+[5,]  0.4 120.0002 0 0 120.0002
+[6,]  0.5 120.0002 0 0 120.0002
+
+
 
 
 
