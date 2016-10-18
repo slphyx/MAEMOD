@@ -1,0 +1,17 @@
+!Equations
+dY1<-Y2
+dY2<-a*sin(Y1)+sin(t)
+
+!Parameters
+a= -1.0
+
+!Inits
+Y1=0,Y2=0
+
+!Outputs
+c(dY1,dY2)
+
+!ExtraFunctions
+
+!MAEMOD_End
+

@@ -1,0 +1,62 @@
+myeq1 <-"
+!Inits
+X=120, Y=0, S=0
+
+!Outputs
+c(dX,dY,dS)
+
+!Parameters
+bonemarrow = 1,
+deathuninfected = 0.00833,
+infectionrate = 0.1,
+deathinfected = 0.2,
+nmerozoites = 16,
+deathmerozoite = 72
+
+!ExtraFunctions
+
+
+!Equations
+dX <- bonemarrow - deathuninfected*X - infectionrate*X*S
+dY <- infectionrate*X*S - deathinfected*Y
+dS <- deathinfected*Y*nmerozoites - deathmerozoite*S - infectionrate*X*S
+U <- X+Y
+L <- sin(t)*U
+maemod.collect(c(t,U,L),'mymatrix')
+
+!MAEMOD_End
+"
+
+out<-maemod.ode(input.text = myeq1,timegrid = seq(0,400,0.1),export.par = 'mymatrix')
+
+myeq2 <-"
+!Inits
+X=120, Y=0, S=0
+
+!Outputs
+c(dX,dY,dS),U=U,L=L
+
+!Parameters
+bonemarrow = 1,
+deathuninfected = 0.00833,
+infectionrate = 0.1,
+deathinfected = 0.2,
+nmerozoites = 16,
+deathmerozoite = 72
+
+!ExtraFunctions
+
+
+!Equations
+dX <- bonemarrow - deathuninfected*X - infectionrate*X*S
+dY <- infectionrate*X*S - deathinfected*Y
+dS <- deathinfected*Y*nmerozoites - deathmerozoite*S - infectionrate*X*S
+U <- X+Y
+L <- sin(t)*U
+
+!MAEMOD_End
+"
+
+out2<-maemod.ode(input.text = myeq2,timegrid = seq(0,400,0.1))
+
+
