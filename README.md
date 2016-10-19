@@ -45,7 +45,7 @@ c(dX,dY,dS),U=U
 "
 ```
 ```{r solving the system numerically}
-#use maemod.ode to the solve the system
+#use maemod.ode to solve the system
 out <- maemod.ode(input.text = mysystem,timegrid = seq(0,600,0.1))
 
 head(out)
