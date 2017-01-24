@@ -122,3 +122,5 @@ scatterplot3d(lorenzout[,c(2,3,4)],type = 'l')
 ![](http://www.sakngoi.com/wp-content/uploads/2016/10/lorenz.png)
 
 
+
+
