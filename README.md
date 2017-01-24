@@ -91,8 +91,34 @@ plot(out[,c(2,3)],col="red")
 ![](http://www.sakngoi.com/wp-content/uploads/2016/10/heart.png)
 
 
+###Ex3
+```{r example }
 
+lorenz<-"
+ !Equations
+ dx<-sigma*(y-x)
+ dy<-x*(rho-z)-y
+ dz<-x*y-beta*z
+ 
+ !Parameters
+ sigma=10, beta=2.66666, rho=28
+ 
+ !Inits
+ x=-10, y=-12, z=30.05
+ 
+ !Outputs
+ c(dx,dy,dz)
+ 
+ !ExtraFunctions
+ 
+ !MAEMOD_End
+ "
 
+lorenzout<-maemod.ode(input.text = lorenz, timegrid = seq(0,30,0.01))
 
+library(scatterplot3d)
+scatterplot3d(lorenzout[,c(2,3,4)],type = 'l')
+```
+![](http://www.sakngoi.com/wp-content/uploads/2016/10/lorenz.png)
 
 
