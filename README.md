@@ -29,7 +29,7 @@ U <- X+Y
 bonemarrow = 1,
 deathuninfected = 0.00833,
 infectionrate = 0.1,
-deathinfected = 0.2,
+]deathinfected = 0.2,
 nmerozoites = 16,
 deathmerozoite = 72
 
@@ -39,7 +39,7 @@ X=120, Y=0, S=0
 !Outputs    #list of the outputs
 c(dX,dY,dS),U=U
 
-!ExtraFunctions   
+[!ExtraFunctions   
 
 !MAEMOD_End
 "
@@ -88,7 +88,7 @@ head(out)
 out<-maemod.ode(input.filename = "test.txt",timegrid = seq(0,20*pi,0.1))
 plot(out[,c(2,3)],col="red")
 ```
-!(http://www.sakngoi.com/wp-content/uploads/2016/10/heart.png)
+![](http://www.sakngoi.com/wp-content/uploads/2016/10/heart.png)
 
 
 
