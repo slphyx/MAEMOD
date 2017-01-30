@@ -1,13 +1,25 @@
 # wrapper function for ode of deSolve
 maemod.ode<-function(input.filename, input.text=NULL, timegrid, export.par=NULL,sys.template=Maemod_ODETEMPLATE1,envir=.GlobalEnv,...){
 
+  vars4plot<-NULL
+
   if(!is.null(input.text)){
+    ## read input from text
+    vars4plot <- PlotVars(input.text)
     GenEQFN(text=input.text,template=sys.template)
     out<-ode(y=initstate,times=timegrid,func=MaemodSYS,parms=parameters, ...)
+    if(!is.null(vars4plot)){
+      plot(out, select = vars4plot, type='l')
+    }
   }
   else{
+    ##read input from file
+    vars4plot <- PlotVarsFile(input.filename)
     GenEQFN(input.filename,template=sys.template)
     out<-ode(y=initstate,times=timegrid,func=MaemodSYS,parms=parameters, ...)
+    if(!is.null(vars4plot)){
+      plot(out, select = vars4plot, type='l')
+    }
   }
 
 

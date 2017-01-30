@@ -69,6 +69,8 @@ PasteInit<-function(initstate,Template){
 GenEQFN<-function(filename, text=NULL, template=Maemod_ODETEMPLATE1, envir=.GlobalEnv){
 
   if(is.null(text)){
+    ## read from input file
+
     extractedstring<-ExtractInputsFromFile(filename)
     exfnstr<-as.character(extractedstring[extractedstring$keys=='!ExtraFunctions',2])
     strExFn<-PasteFunc(exfnstr,Template = template)
@@ -90,6 +92,8 @@ GenEQFN<-function(filename, text=NULL, template=Maemod_ODETEMPLATE1, envir=.Glob
     eval(parse(file = "MAEMODSys.inp"),envir=envir)
   }
   else{
+    ## read from input text
+
     KW<-KeyWordsPosition(text)
     extractedstring<-ExtractInputs(KW,text)
 
@@ -114,6 +118,5 @@ GenEQFN<-function(filename, text=NULL, template=Maemod_ODETEMPLATE1, envir=.Glob
 
   }
 }
-
 
 

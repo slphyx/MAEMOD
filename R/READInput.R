@@ -8,7 +8,7 @@
 
 # read from input string
 
-MAEMOD_Keys<-c("!Equations","!Parameters", "!Outputs", "!Inits", "!ExtraFunctions", "!MAEMOD_End")
+MAEMOD_Keys<-c("!Equations","!Parameters", "!Outputs", "!Inits", "!ExtraFunctions", "!Plots", "!MAEMOD_End")
 
 # number of keys
 No_Keys <- length(MAEMOD_Keys)
@@ -57,7 +57,7 @@ ExtractInputs<-function(keypositions, inputstring){
   for(i in 1:(No_Keys-1)){
     extractstring[i]<-substr(inputstring,pos[i]+KeyLength(keys[i]),pos[i+1]-1)
   }
-  return(data.frame(keys=keys,inputs=extractstring))
+  return(data.frame(keys=keys,inputs=extractstring, stringsAsFactors=FALSE))
 }
 
 ExtractInputsFromFile<-function(filename){
@@ -72,6 +72,18 @@ ExtractInputsFromFile<-function(filename){
   return(extracted)
 }
 
+PlotVars<-function(intext){
+  KW<-KeyWordsPosition(inputstring = intext)
+  extractedstring<-ExtractInputs(keypositions = KW, inputstring = intext)
 
+  explotvarstr<-as.character(extractedstring[extractedstring$keys=='!Plots',2])
+  eval(parse(text=explotvarstr))
+}
 
+PlotVarsFile<-function(filename){
+  if(file.exists(filename)){
+    intext <- ReadInputString(filename)
+  }
+  PlotVars(intext)
+}
 

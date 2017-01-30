@@ -39,7 +39,9 @@ X=120, Y=0, S=0
 !Outputs    #list of the outputs
 c(dX,dY,dS),U=U
 
-[!ExtraFunctions   
+!ExtraFunctions   
+
+!Plots
 
 !MAEMOD_End
 "
@@ -79,6 +81,8 @@ head(out)
  
 !ExtraFunctions
 
+!Plots
+
 !MAEMOD_End
 
 ###
@@ -110,6 +114,8 @@ lorenz<-"
  c(dx,dy,dz)
  
  !ExtraFunctions
+ 
+ !Plots
  
  !MAEMOD_End
  "
