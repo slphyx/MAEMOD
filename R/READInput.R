@@ -1,10 +1,3 @@
-###
-#   MMTemplate for generating the system function using the input equations
-#
-#   Build and Reload Package:  'Ctrl + Shift + B'
-#   Check Package:             'Ctrl + Shift + E'
-#   Test Package:              'Ctrl + Shift + T'
-
 
 # read from input string
 
