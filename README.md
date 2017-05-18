@@ -121,6 +121,171 @@ scatterplot3d(lorenzout[,c(2,3,4)],type = 'l')
 ```
 ![](http://www.sakngoi.com/wp-content/uploads/2016/10/lorenz.png)
 
+###Ex4 
+using maemod with manipulate
 
+```{r example}
+
+#####
+# mysystem1.txt
+#####
+!Equations
+mr<-1*(t>startmig)*(t<(startmig+durmig))
+    
+    Nh <- Sh+Es+Ia+Ic+Tr+Tnr+R+Er
+    Nm <- Sm+Em+Im
+    inc <- (1-Ka)*Es*(pr*pt)*p
+    prev <- {(pr*pt)*Ic*p+(1-pr)*pt*Ic*p}*Es
+    miSh<- 1-miIa-miIc
+    moSh<- 1-moIa-moIc
+    
+# seas<-1+amp*cos(2*pi*(t/phi))
+# treatment<-t_cov*t_eff*(t>(year_interv))
+
+    
+dSh<- -b*Im*Sh/Nh   + w*R + a*Nh+ mr*miSh*Nh - mr*moSh*Nh    -a*Sh 
+dEs<- b*Im*Sh/Nh - v*Ka*Es  -(1-Ka)*v*Es  -a*Es
+dIa <- -  p1*Ia  + mr*miIa*Nh-mr*moIa*Nh     + v*Ka*Es    +p3*(1-pt)*Ic+ Ke*v*Er  - a*Ia
+dIc <- + mr*miIc*Nh-mr*moIc*Nh   + (1-Ka)*v*Es  - p3*(1-pt)*Ic  - (pr*pt)*Ic*p -(1-pr)*pt*Ic*p  + v*(1-Ke)*Er - a*Ic 
+dTr <-  -Tr*p2  +  (pr*pt)*Ic*p -Tr*a
+dTnr <- -Tnr*p2+(1-pr)*pt*Ic*p   -Tnr*a
+dR <-   + p1*Ia  -w*R     +Tr*p2       +Tnr*p2  - b*(Ia+Ic)*R/Nh   -a*R 
+dEr <- b*(Ia+Ic)*R/Nh -Ke*v*Er- v*(1-Ke)*Er     - a*Er
+
+ 
+dSm <- -b*(Ia+Ic)*Sm/Nm + am*Nm - am*Sm
+dEm <- b*(Ia+Ic)*Sm/Nm-vm*Em - am*Em
+dIm <- vm*Em  - am*Im
+
+
+
+
+!Parameters   
+a = 21.5/1000/365,
+           v = 1/10, 
+           p = 1/4, 
+           p1 =  1/60, 
+           p2 = 1/10,
+           p3 = 1/14, 
+           Ka = .2, 
+           Ke = .2,
+           pr =.9, 
+           pt =.8, 
+           w= 1/30, 
+           b= .6, 
+           startmig = 10,
+           durmig=20,
+           miIa = 0.03, 
+           miIc = 0.05, 
+           moIa = 0.03, 
+           moIc = 0.05,
+           am= 1/10,
+           vm=30
+           
+!Inits      #initial value of each compartment
+Sh=98900, 
+Es=0,
+Ia=100, 
+Ic=10, 
+Tr=0, 
+Tnr=0, 
+R=0, 
+Er=0,
+Sm=100000000,
+Em=0,
+Im=1000
+
+!Outputs    #list of the outputs
+c(dSh, dEs, dIa, dIc, dTr, dTnr, dR, dEr,dSm, dEm, dIm),Nh=Nh,Nm=Nm,Inc=inc, prev=prev
+
+!ExtraFunctions   
+
+!Plots
+
+!MAEMOD_End
+
+
+#####
+
+library(deSolve)
+library(maemod)
+library(manipulate)
+
+#where is your system file
+path<-"D:\\works\\abiodun"
+setwd(path)
+
+#create the function from the system file
+maemod.gensysfunction(input.filename = "mysystem1.txt")
+
+#write a wrapper function for plotting the results
+plotresults<-function(a,v,p,p1,p2,p3,Ka,Ke,pr,pt,w,b,startmig,durmig,
+                      miIa,miIc,moIa,moIc,am,vm){
+  parameters<-c(
+    a = a,
+    v = v, 
+    p = p, 
+    p1 =  p1, 
+    p2 = p2,
+    p3 = p3, 
+    Ka = Ka, 
+    Ke = Ke,
+    pr = pr, 
+    pt = pt, 
+    w= w, 
+    b= b, 
+    startmig = startmig,
+    durmig=durmig,
+    miIa = miIa, 
+    miIc = miIc, 
+    moIa = moIa, 
+    moIc = moIc,
+    am= am,
+    vm= vm
+  )
+  #time for running the model
+  timegrid<-seq(0,500,1/30)
+  init<-initstate  #initstate is already generated from maemod.gensysfunction
+  #solve the equations
+  output<-ode(y=init,times = timegrid, func = MaemodSYS,parms=parameters)
+  
+  #plot the results
+  plot(output,select=c("Nh","Nm","Inc","prev"))
+  
+}
+
+
+manipulate(
+  
+  plotresults(a=21.5/1000/365,v=1/10,p=1/4,p1=1/60,p2=1/10,
+              p3=1/14,Ka=0.2,Ke=0.2,pr=0.9,pt=0.8,
+              w=1/30,b=0.6,startmig=10,durmig=20,
+              miIa,miIc,moIa,moIc,am=1/10,vm=30)
+  ,
+  #a =21.5/1000/365 ,
+  #v = 1/10, 
+  #p = 1/4, 
+  #p1 =  1/60, 
+  #p2 = 1/10,
+  #p3 = 1/14, 
+  #Ka = slider(0,2,step=0.01), 
+  #Ke = slider(0,2,step=0.01),
+  #pr =slider(0,2,step=0.01), 
+  #pt =slider(0,2,step=0.01), 
+  #w= 1/30, 
+  #b= 0.6, 
+  #startmig = 10,
+  #durmig=20,
+  miIa = slider(0,1,initial = 0.03,step=0.001), 
+  miIc = slider(0,1,initial = 0.05,step=0.001), 
+  moIa = slider(0,1,initial = 0.03,step=0.001), 
+  moIc = slider(0,1,initial = 0.05,step=0.001)
+  #am= 1/10,
+  #vm=30
+  
+)
+
+
+```
 
 
