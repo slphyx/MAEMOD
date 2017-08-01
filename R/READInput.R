@@ -42,7 +42,7 @@ KeyWordsPosition<-function(inputstring){
   return(KW[sort.list(KW$positions),])
 }
 
-
+#extracting the inputs using the keywords
 ExtractInputs<-function(keypositions, inputstring){
   keys<-as.vector(keypositions$keys)
   pos<-keypositions$pos
@@ -53,6 +53,7 @@ ExtractInputs<-function(keypositions, inputstring){
   return(data.frame(keys=keys,inputs=extractstring, stringsAsFactors=FALSE))
 }
 
+#extrating from a file
 ExtractInputsFromFile<-function(filename){
   if(file.exists(filename)){
     inputstring<-ReadInputString(filename)
@@ -65,6 +66,7 @@ ExtractInputsFromFile<-function(filename){
   return(extracted)
 }
 
+# list of the parameters for plotting the results
 PlotVars<-function(intext){
   KW<-KeyWordsPosition(inputstring = intext)
   extractedstring<-ExtractInputs(keypositions = KW, inputstring = intext)
@@ -73,6 +75,7 @@ PlotVars<-function(intext){
   eval(parse(text=explotvarstr))
 }
 
+# list of the parameters for plotting from the input file
 PlotVarsFile<-function(filename){
   if(file.exists(filename)){
     intext <- ReadInputString(filename)

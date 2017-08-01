@@ -7,17 +7,14 @@ MaemodSYS<-function(t, state, parameters) {
   with(as.list(c(state, parameters)),{
 
     
-dX <- bonemarrow - deathuninfected*X - infectionrate*X*S
-dY <- infectionrate*X*S - deathinfected*Y
-dS <- deathinfected*Y*nmerozoites - deathmerozoite*S - infectionrate*X*S
-U <- X+Y
-L <- sin(t)*U
-maemod.collect(c(t,U,L),'mymatrix')
+dx<-sigma*(y-x)
+dy<-x*(rho-z)-y
+dz<-x*y-beta*z
 
 
 
     list( 
-c(dX,dY,dS),U=U,L=L
+c(dx,dy,dz)
 
  )
   })
@@ -25,17 +22,12 @@ c(dX,dY,dS),U=U,L=L
 
 
 parameters<-c( 
-bonemarrow = 1,
-deathuninfected = 0.00833,
-infectionrate = 0.1,
-deathinfected = 0.2,
-nmerozoites = 16,
-deathmerozoite = 72
+sigma=10, beta=2.66666, rho=28
 
  )
 
 initstate<-c( 
-X=120, Y=0, S=0
+x=-10, y=-12, z=30.05
 
  )
 
