@@ -23,7 +23,7 @@ U <- X+Y
 bonemarrow = 1,
 deathuninfected = 0.00833,
 infectionrate = 0.1,
-]deathinfected = 0.2,
+deathinfected = 0.2,
 nmerozoites = 16,
 deathmerozoite = 72
 
