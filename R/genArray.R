@@ -11,7 +11,7 @@ genArray1D<-function(expr,index,pattern='i.idx'){
 }
 
 RemoveDuplication <- function(outstr){
-  paste(unique(outstr)[[1]],collapse = '\n')
+  paste(unique(strsplit(outstr,split = '\n')[[1]]),collapse = '\n')
 }
 
 # for generating the list of equations
@@ -31,4 +31,27 @@ genArray <- function(expr,dim,pattern){
   }
   RemoveDuplication(out.array)
 }
+
+'%=>%'<-function(symbol,index){
+  list(symbol=symbol,index=index)
+}
+
+'%@@%' <- function(expr,pattern.indx){
+  if(!is.list(pattern.indx))
+    stop('please check your input!')
+
+  if(is.list(pattern.indx) &length(pattern.indx)==1){
+    index <- pattern.indx$index
+    pattern <- pattern.indx$symbol
+    out.array <- genArray1D(expr,index,pattern)
+  }
+
+  if(is.list(pattern.indx) & length(pattern.indx)==2){
+    out.array <- genArray1D(genArray1D(expr,pattern.indx[[2]]$index,pattern.indx[[2]]$symbol),
+                            pattern.indx[[1]]$index,pattern.indx[[1]]$symbol)
+  }
+
+  RemoveDuplication(out.array)
+}
+### testing 'dy[i.indx] <- a * i.indx '%@@%list('i.indx'%=>%1:4,'j.indx'%=>%1:3)
 
