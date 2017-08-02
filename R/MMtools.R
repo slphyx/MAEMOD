@@ -7,7 +7,7 @@ maemod.ode<-function(input.filename, input.text=NULL, timegrid, export.par=NULL,
     ## read input from text
     vars4plot <- PlotVars(input.text)
     GenEQFN(text=input.text,template=sys.template)
-    out<-ode(y=initstate,times=timegrid,func=MaemodSYS,parms=parameters, ...)
+    out<-ode(y=maemod.initstate,times=timegrid,func=MaemodSYS,parms=maemod.parameters, ...)
     if(!is.null(vars4plot)){
       plot(out, select = vars4plot, type='l')
     }
@@ -16,7 +16,7 @@ maemod.ode<-function(input.filename, input.text=NULL, timegrid, export.par=NULL,
     ##read input from file
     vars4plot <- PlotVarsFile(input.filename)
     GenEQFN(input.filename,template=sys.template)
-    out<-ode(y=initstate,times=timegrid,func=MaemodSYS,parms=parameters, ...)
+    out<-ode(y=maemod.initstate,times=timegrid,func=MaemodSYS,parms=maemod.parameters, ...)
     if(!is.null(vars4plot)){
       plot(out, select = vars4plot, type='l')
     }

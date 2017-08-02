@@ -58,7 +58,7 @@ U <- X+Y
 L <- sin(t)*U
 
 !Plots
-
+c('X','L')
 !MAEMOD_End
 "
 

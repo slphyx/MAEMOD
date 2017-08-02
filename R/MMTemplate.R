@@ -18,9 +18,9 @@ MaemodSYS<-function(t, state, parameters) {
 }
 
 
-parameters<-c( MAEModPARAMETERS )
+maemod.parameters<-c( MAEModPARAMETERS )
 
-initstate<-c( MAEModSTATE )
+maemod.initstate<-c( MAEModSTATE )
 
 ";
 
@@ -37,9 +37,9 @@ MaemodSYS<-function(t, state, parameters) {
 }
 
 
-parameters<-c( MAEModPARAMETERS )
+maemod.parameters<-c( MAEModPARAMETERS )
 
-initstate<-c( MAEModSTATE )
+maemod.initstate<-c( MAEModSTATE )
 
 ";
 
