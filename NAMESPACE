@@ -1,5 +1,5 @@
 #import("deSolve")
-export("Maemod_ODETEMPLATE1","Maemod_ODETEMPLATE2")
+export("Maemod_ODETEMPLATE1","Maemod_ODETEMPLATE2","Maemod_Array")
 export("maemod.ode","maemod.sametimes","maemod.collect","maemod.gensysfunction")
 export("%@@%","%=>%","%@%")
 #exportPattern("^[[:alpha:]]+")

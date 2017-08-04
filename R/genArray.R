@@ -1,5 +1,5 @@
 ## for using array in the !Equations section
-#
+
 
 # replace the pattern with the index
 genArray1D<-function(expr,index,pattern='i.idx',sep='\n'){
@@ -47,13 +47,13 @@ genArray <- function(expr,dim,pattern){
 
 ### use with equations
 ### testing 'dy[i.indx] <- a * i.indx '%@@%list('i.indx'%=>%1:4,'j.indx'%=>%1:3)
-'%@@%' <- function(expr,pattern.indx, evaluate = TRUE){
+'%@@%' <- function(expr,pattern.indx){
   if(!is.list(pattern.indx))
     stop('please check your input!')
 
   if(is.list(pattern.indx) &length(pattern.indx)==1){
-    index <- pattern.indx$index
-    pattern <- pattern.indx$symbol
+    index <- pattern.indx[[1]]$index
+    pattern <- pattern.indx[[1]]$symbol
     out.array <- genArray1D(expr,index,pattern)
   }
 
@@ -61,25 +61,25 @@ genArray <- function(expr,dim,pattern){
     out.array <- genArray1D(genArray1D(expr,pattern.indx[[2]]$index,pattern.indx[[2]]$symbol),
                             pattern.indx[[1]]$index,pattern.indx[[1]]$symbol)
   }
-  if(evaluate){
-    evalstr<-RemoveDuplication(out.array)
-    eval(parse(text=evalstr))
-  }else
-  {
-    RemoveDuplication(out.array)
-  }
+  RemoveDuplication(out.array)
 }
 
 
-ArrayNames <- function(expr){
+ArrayNames <- function(expr,nm = TRUE){
   splittxt <- strsplit(expr,split = ',')[[1]]
   inputlen <- length(splittxt)
   dropped <- strsplit(splittxt,split = '<-')
-  outnames <-c()
-  for(i in 1:inputlen)
-    outnames <- c(outnames,dropped[[i]][1])
-
-  paste0(outnames,collapse = ',')
+  outnames <- c()
+  outvals <- c()
+  for(i in 1:inputlen){
+    outnames <- c(outnames,paste0('"',dropped[[i]][1],'"'))
+    outvals <- c(outvals,dropped[[i]][2])
+  }
+  if(nm == TRUE){
+    paste0(outnames,collapse = ',')
+  }else{
+    paste0(outvals,collapse = ',')
+  }
 }
 
 ##
@@ -93,19 +93,10 @@ ArrayNames <- function(expr){
     out.array <- genArray1D(expr,index,pattern,sep = ',')
   }
 
-  genarray <- paste('c(',out.array,')')
-  vecnames <- ArrayNames(out.array)
-  cat(vecnames)
+  genarray <- paste0('c(',ArrayNames(out.array,nm = FALSE),')')
+  vecnames <- paste0('c(',ArrayNames(out.array, nm = TRUE),')')
 
-  if(exists('maemod.parameters',envir = .GlobalEnv)){
-    eval(parse(text = paste('maemod.parameters <-',genarray)),envir = .GlobalEnv)
-    eval(parse(text = paste('names(maemod.parameters) <- ','c(',vecnames,')')),envir = .GlobalEnv)
-  }else{
-    #assign('maemod.parameters', c() ,envir = .GlobalEnv)
-    streval <- paste0('maemod.parameters','<<-',genarray)
-    eval(parse(text = streval),envir = .GlobalEnv)
-    eval(parse(text = paste('names(maemod.parameters) <- ','c(',vecnames,')')),envir = .GlobalEnv)
-  }
+  eval(parse(text = paste0('maemod.parameters <- setNames(',genarray,',', vecnames, ')')) , envir = .GlobalEnv)
 
 }
 
