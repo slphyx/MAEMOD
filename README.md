@@ -289,7 +289,7 @@ manipulate(
 ```
 
 using maemod with array. 
-This version the state variable has to be named 'A' and the array parameter has to be 'k'.
+the state variable has to be named 'A' and the array parameter has to be 'k' in this version.
 
 ```{r example}
 # Example from Berkeley Madonna
