@@ -2,5 +2,6 @@
 export("Maemod_ODETEMPLATE1","Maemod_ODETEMPLATE2","Maemod_Array")
 export("maemod.ode","maemod.sametimes","maemod.collect","maemod.gensysfunction")
 export("%@@%","%=>%","%@%")
+export("Parameter.Names","Compartment.Names","Compartment.Names.Output")
 importFrom(stringr,str_match)
 #exportPattern("^[[:alpha:]]+")

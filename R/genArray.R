@@ -46,10 +46,11 @@ genArray <- function(expr,dim,pattern){
 
 
 ### use with equations
-### testing 'dy[i.indx] <- a * i.indx '%@@%list('i.indx'%=>%1:4,'j.indx'%=>%1:3)
+### testing 'dy[i.indx] <- a * i.indx '%@@%list('i.indx'%=>%1:4)
+##
 '%@@%' <- function(expr,pattern.indx){
   if(!is.list(pattern.indx))
-    stop('please check your input!')
+    stop('please check your input! pattern.indx must be a list of two indices.')
 
   if(is.list(pattern.indx) &length(pattern.indx)==1){
     index <- pattern.indx[[1]]$index

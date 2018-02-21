@@ -76,7 +76,7 @@ PasteEQ<-function(inputSys,Template){
   gsub("MAEModYOUREQ",inputSys,Template)
 }
 
-#input is the text from PateEQ
+#input is the text from PasteEQ
 PasteEQArray <- function(input){
   pattern <- "#ArrayB(.*?)#ArrayE"
   matched <- regmatches(input,regexec(pattern,input))[[1]]

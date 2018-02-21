@@ -28,7 +28,7 @@ KeyWordsPosition<-function(inputstring){
   len<-length(rawpos[[1]])
 
   if(len != No_Keys){
-    stop("PLEASE CHECK YOUR INPUT KEYS.")
+    stop("PLEASE CHECK YOUR INPUT KEYS!")
   }
 
   keyspos<-1:No_Keys
@@ -83,3 +83,23 @@ PlotVarsFile<-function(filename){
   PlotVars(intext)
 }
 
+Parameter.Names <- function(...){
+  if(exists("maemod.parameters"))
+    names(maemod.parameters)
+  else
+    stop('maemod.parameters does not exist!')
+}
+
+#vector of the compartments
+# their names must be began with 'd', i.e., dX,dS, dInfected, etc..
+Compartment.Names <- function(...){
+  if(exists("maemod.initstate"))
+    names(maemod.initstate)
+  else
+    stop('maemod.initstate does not exist!')
+}
+
+#list of the compartments and the variables shown in deSolve object
+Compartment.Names.Output <- function(obj,...){
+  colnames(obj)
+}

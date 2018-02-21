@@ -1,4 +1,4 @@
-# wrapper function for ode of deSolve
+# wrapper function for deSolve::ode
 maemod.ode<-function(input.filename, input.text=NULL, timegrid, export.par=NULL,sys.template=Maemod_ODETEMPLATE1,envir=.GlobalEnv,...){
 
   vars4plot<-NULL

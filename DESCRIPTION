@@ -4,7 +4,7 @@ Title:  A user friendly compartmental modelling enviroment in R
 Version: 0.0.0.2
 Author: Sompob Saralamba
 Maintainer: Sompob Saralamba <saralamba@gmail.com>
-Description: maemod is a simple version of deSolve::ode. It is designed for a person who is not trained, qualified, or experienced in Differential Equations.
+Description: maemod is a simple version of deSolve::ode.
 Depends: R (>= 2.15.0), deSolve
 Imports: deSolve
 License: MIT License
