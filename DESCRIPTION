@@ -2,7 +2,7 @@ Package: maemod
 Type: Package
 Title:  A user friendly compartmental modelling enviroment in R
 Version: 0.0.0.2
-Author: Sompob Saralamba
+Author: Sompob Saralamba, Lisa White
 Maintainer: Sompob Saralamba <saralamba@gmail.com>
 Description: maemod is a simple version of deSolve::ode.
 Depends: R (>= 2.15.0), deSolve
