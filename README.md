@@ -13,6 +13,11 @@ install_github("slphyx/maemod")
 ```{r example}
 #define the system
 mysystem <- "
+!MAEMOD_Begin
+STARTTIME <- 0
+STOPTIME <- 600
+DT <- 0.1
+
 !Equations
 dX <- bonemarrow - deathuninfected*X - infectionrate*X*S
 dY <- infectionrate*X*S - deathinfected*Y
@@ -33,8 +38,6 @@ X=120, Y=0, S=0
 !Outputs    #list of the outputs
 c(dX,dY,dS),U=U
 
-!ExtraFunctions   
-
 !Plots
 
 !MAEMOD_End
@@ -42,7 +45,7 @@ c(dX,dY,dS),U=U
 ```
 ```{r solving the system numerically}
 #use maemod.ode to solve the system
-out <- maemod.ode(input.text = mysystem,timegrid = seq(0,600,0.1))
+out <- maemod.ode(input.text = mysystem)
 
 head(out)
      time        X Y S        U
@@ -60,6 +63,10 @@ head(out)
 #define the system in a text file (test.txt)
 #
 ##### test.txt
+!MAEMOD_Begin
+STARTTIME <- 0
+STOPTIME <- 20*pi
+DT <- 0.1
 !Equations
  dY1<-Y2
  dY2<-a*sin(Y1)+sin(t)
@@ -73,8 +80,6 @@ head(out)
 !Outputs
  c(dY1,dY2)
  
-!ExtraFunctions
-
 !Plots
 
 !MAEMOD_End
@@ -83,7 +88,7 @@ head(out)
 ```
 
 ```{r solve the system and plot the results}
-out<-maemod.ode(input.filename = "test.txt",timegrid = seq(0,20*pi,0.1))
+out<-maemod.ode(input.filename = "test.txt")
 plot(out[,c(2,3)],col="red")
 ```
 ![](http://www.sakngoi.com/wp-content/uploads/2016/10/heart.png)
@@ -93,6 +98,11 @@ plot(out[,c(2,3)],col="red")
 ```{r example }
 
 lorenz<-"
+ ! MAEMOD_Begin
+ STARTTIME <- 0
+ STOPTIME <- 30
+ DT <- 0.01
+ 
  !Equations
  dx<-sigma*(y-x)
  dy<-x*(rho-z)-y
@@ -107,14 +117,12 @@ lorenz<-"
  !Outputs
  c(dx,dy,dz)
  
- !ExtraFunctions
- 
  !Plots
  
  !MAEMOD_End
  "
 
-lorenzout<-maemod.ode(input.text = lorenz, timegrid = seq(0,30,0.01))
+lorenzout<-maemod.ode(input.text = lorenz)
 
 library(scatterplot3d)
 scatterplot3d(lorenzout[,c(2,3,4)],type = 'l')
@@ -129,6 +137,11 @@ using maemod with manipulate
 #####
 # mysystem1.txt
 #####
+!MAEMOD_Begin
+STARTTIME <- 0
+STOPTIME <- 500
+DT <- 1/30
+
 !Equations
 mr<-1*(t>startmig)*(t<(startmig+durmig))
     
@@ -138,9 +151,6 @@ mr<-1*(t>startmig)*(t<(startmig+durmig))
     prev <- {(pr*pt)*Ic*p+(1-pr)*pt*Ic*p}*Es
     miSh<- 1-miIa-miIc
     moSh<- 1-moIa-moIc
-    
-# seas<-1+amp*cos(2*pi*(t/phi))
-# treatment<-t_cov*t_eff*(t>(year_interv))
 
     
 dSh<- -b*Im*Sh/Nh   + w*R + a*Nh+ mr*miSh*Nh - mr*moSh*Nh    -a*Sh 
@@ -156,8 +166,6 @@ dEr <- b*(Ia+Ic)*R/Nh -Ke*v*Er- v*(1-Ke)*Er     - a*Er
 dSm <- -b*(Ia+Ic)*Sm/Nm + am*Nm - am*Sm
 dEm <- b*(Ia+Ic)*Sm/Nm-vm*Em - am*Em
 dIm <- vm*Em  - am*Im
-
-
 
 
 !Parameters   
@@ -197,8 +205,6 @@ Im=1000
 
 !Outputs    #list of the outputs
 c(dSh, dEs, dIa, dIc, dTr, dTnr, dR, dEr,dSm, dEm, dIm),Nh=Nh,Nm=Nm,Inc=inc, prev=prev
-
-!ExtraFunctions   
 
 !Plots
 
@@ -243,8 +249,7 @@ plotresults<-function(a,v,p,p1,p2,p3,Ka,Ke,pr,pt,w,b,startmig,durmig,
     am= am,
     vm= vm
   )
-  #time for running the model
-  timegrid<-seq(0,500,1/30)
+  
   init<-initstate  #initstate is already generated from maemod.gensysfunction
   #solve the equations
   output<-ode(y=init,times = timegrid, func = MaemodSYS,parms=parameters)
@@ -262,33 +267,18 @@ manipulate(
               w=1/30,b=0.6,startmig=10,durmig=20,
               miIa,miIc,moIa,moIc,am=1/10,vm=30)
   ,
-  #a =21.5/1000/365 ,
-  #v = 1/10, 
-  #p = 1/4, 
-  #p1 =  1/60, 
-  #p2 = 1/10,
-  #p3 = 1/14, 
-  #Ka = slider(0,2,step=0.01), 
-  #Ke = slider(0,2,step=0.01),
-  #pr =slider(0,2,step=0.01), 
-  #pt =slider(0,2,step=0.01), 
-  #w= 1/30, 
-  #b= 0.6, 
-  #startmig = 10,
-  #durmig=20,
+
   miIa = slider(0,1,initial = 0.03,step=0.001), 
   miIc = slider(0,1,initial = 0.05,step=0.001), 
   moIa = slider(0,1,initial = 0.03,step=0.001), 
   moIc = slider(0,1,initial = 0.05,step=0.001)
-  #am= 1/10,
-  #vm=30
-  
+
 )
 
 
 ```
 
-using maemod with array. 
+using maemod with the array equations
 the state variable has to be named 'A' and the array parameter has to be 'k' in this version.
 
 ```{r example}
@@ -313,7 +303,10 @@ the state variable has to be named 'A' and the array parameter has to be 'k' in 
 #
 
 arrayEx <-'
-!ExtraFunctions
+!MAEMOD_Begin
+STARTTIME <- 0
+STOPTIME <- 20
+DT <- 0.02
 n<-14
 
 !Equations
@@ -338,7 +331,7 @@ c(dA)
 
 !MAEMOD_End
 '
-out<-maemod.ode(input.text = arrayEx ,timegrid = seq(0,20,0.02),sys.template = Maemod_Array)
+out<-maemod.ode(input.text = arrayEx ,sys.template = Maemod_Array)
 plot(out[,c(1,2)],type = 'l')
 cols<-rainbow(14)
 for(i in 3:n) lines(out[,c(1,i)],col=cols[i])

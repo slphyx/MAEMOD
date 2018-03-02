@@ -1,7 +1,7 @@
 
 # read from input string
 
-MAEMOD_Keys<-c("!Equations","!Parameters", "!Outputs", "!Inits", "!ExtraFunctions", "!Plots", "!MAEMOD_End")
+MAEMOD_Keys<-c("!MAEMOD_Begin","!Equations", "!Parameters", "!Outputs", "!Inits", "!Plots", "!MAEMOD_End")
 
 # number of keys
 No_Keys <- length(MAEMOD_Keys)
@@ -66,13 +66,39 @@ ExtractInputsFromFile<-function(filename){
   return(extracted)
 }
 
-# list of the parameters for plotting the results
-PlotVars<-function(intext){
+#retunrn the input text for each section key
+ExtractInputFromKey <- function(intext, key){
+
   KW<-KeyWordsPosition(inputstring = intext)
   extractedstring<-ExtractInputs(keypositions = KW, inputstring = intext)
 
-  explotvarstr<-as.character(extractedstring[extractedstring$keys=='!Plots',2])
-  eval(parse(text=explotvarstr))
+  outstr<-as.character(extractedstring[extractedstring$keys==key,2])
+  return(outstr)
+
+}
+
+
+# remove '\n' and ' ' from string input
+RemoveSpace <- function(input){
+  #remove '\n'
+  tmp <- str_replace_all(string = input, pattern = "\n", replacement = "")
+  #remove white space ' '
+  tmp <- str_replace_all(string = tmp, pattern = " ", replacement = "")
+  return(tmp)
+}
+
+#for solving the '\r\n' problem
+# remove \r
+RemoveRN <- function(input){
+  str_replace_all(string = input, pattern = "\r", replacement = "")
+}
+
+# list of the parameters for plotting the results
+PlotVars<-function(intext){
+  explotvarstr <- ExtractInputFromKey(intext, key="!Plots")
+  #print(explotvarstr)
+  tmp<- eval(parse(text = RemoveRN(explotvarstr)))
+  return(tmp)
 }
 
 # list of the parameters for plotting from the input file
@@ -83,6 +109,7 @@ PlotVarsFile<-function(filename){
   PlotVars(intext)
 }
 
+
 Parameter.Names <- function(...){
   if(exists("maemod.parameters"))
     names(maemod.parameters)
@@ -90,16 +117,32 @@ Parameter.Names <- function(...){
     stop('maemod.parameters does not exist!')
 }
 
-#vector of the compartments
-# their names must be began with 'd', i.e., dX,dS, dInfected, etc..
-Compartment.Names <- function(...){
-  if(exists("maemod.initstate"))
-    names(maemod.initstate)
-  else
-    stop('maemod.initstate does not exist!')
+addD <- function(cpnm.vector){
+  dc <- paste(paste0("d",cpnm.vector),collapse = ",")
+  paste0("c(",dc,")")
 }
 
-#list of the compartments and the variables shown in deSolve object
-Compartment.Names.Output <- function(obj,...){
-  colnames(obj)
+# get the namges of the compartments from !Inits
+Compartment.Names <- function(inputinits, addD = T,...){
+  # if(exists("maemod.initstate"))
+  #   if(addD==F){
+  #     return(names(maemod.initstate))
+  #   }else{
+  #     return(addD(names(maemod.initstate)))
+  #   }
+  # else
+  #   stop('maemod.initstate does not exist!')
+
+  #inputinits <- ExtractInputFromKey(inputtxt, key= "!Inits")
+  tmp <- RemoveSpace(input = inputinits)
+  tmp <- unlist(str_split(string = tmp, pattern = ","))
+  n.compartments <- length(tmp)
+  tmp <- unlist(str_split(string = tmp, pattern = "="))
+  if(addD==T)
+    return(addD(tmp[2*(0:(n.compartments-1))+1]))
+  else
+    return(tmp[2*(0:(n.compartments-1))+1])
 }
+
+
+

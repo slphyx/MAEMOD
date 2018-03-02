@@ -1,5 +1,5 @@
 # wrapper function for deSolve::ode
-maemod.ode<-function(input.filename, input.text=NULL, timegrid, export.par=NULL,sys.template=Maemod_ODETEMPLATE1,envir=.GlobalEnv,...){
+maemod.ode<-function(input.filename, input.text=NULL, export.par=NULL,sys.template=Maemod_ODETEMPLATE,envir=.GlobalEnv,...){
 
   vars4plot<-NULL
 
@@ -7,6 +7,10 @@ maemod.ode<-function(input.filename, input.text=NULL, timegrid, export.par=NULL,
     ## read input from text
     vars4plot <- PlotVars(input.text)
     GenEQFN(text=input.text,template=sys.template)
+    # check if timegrid exists
+    if(!exists("timegrid")){
+      stop('timegrid cannot be created. Please check STARTTIME, STOPTIME and DT.')
+    }
     out<-ode(y=maemod.initstate,times=timegrid,func=MaemodSYS,parms=maemod.parameters, ...)
     if(!is.null(vars4plot)){
       plot(out, select = vars4plot, type='l')
@@ -16,6 +20,10 @@ maemod.ode<-function(input.filename, input.text=NULL, timegrid, export.par=NULL,
     ##read input from file
     vars4plot <- PlotVarsFile(input.filename)
     GenEQFN(input.filename,template=sys.template)
+    # check if timegrid exists
+    if(!exists("timegrid")){
+      stop('timegrid cannot be created. Please check STARTTIME, STOPTIME and DT.')
+    }
     out<-ode(y=maemod.initstate,times=timegrid,func=MaemodSYS,parms=maemod.parameters, ...)
     if(!is.null(vars4plot)){
       plot(out, select = vars4plot, type='l')
@@ -34,7 +42,7 @@ maemod.ode<-function(input.filename, input.text=NULL, timegrid, export.par=NULL,
   return(out)
 }
 
-maemod.gensysfunction<-function(input.filename, input.text=NULL, export.par=NULL,sys.template=Maemod_ODETEMPLATE1){
+maemod.gensysfunction<-function(input.filename, input.text=NULL, export.par=NULL,sys.template=Maemod_ODETEMPLATE){
   if(!is.null(input.text)){
     GenEQFN(text=input.text,template=sys.template)
   }
