@@ -38,6 +38,7 @@ X=120, Y=0, S=0
 !Outputs    #additional outputs
 U=U
 
+
 !Plots
 
 !MAEMOD_End
@@ -78,7 +79,6 @@ DT <- 0.1
  Y1=0,Y2=0
  
 !Outputs
-
  
 !Plots
 
@@ -115,7 +115,6 @@ lorenz<-"
  x=-10, y=-12, z=30.05
  
  !Outputs
- 
  
  !Plots
  
