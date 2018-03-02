@@ -1,4 +1,9 @@
 myeq1 <-"
+!MAEMOD_Begin
+STARTTIME <- 0
+STOPTIME <- 400
+DT <- 0.1
+
 !Inits
 X=120, Y=0, S=0
 
@@ -12,8 +17,6 @@ infectionrate = 0.1,
 deathinfected = 0.2,
 nmerozoites = 16,
 deathmerozoite = 72
-
-!ExtraFunctions
 
 
 !Equations
@@ -30,9 +33,13 @@ c('X','L')
 !MAEMOD_End
 "
 
-out<-maemod.ode(input.text = myeq1,timegrid = seq(0,400,0.1),export.par = 'mymatrix')
+out<-maemod.ode(input.text = myeq1,export.par = 'mymatrix')
 
 myeq2 <-"
+!MAEMOD_Begin
+STARTTIME <- 0
+STOPTIME <- 400
+DT <- 0.1
 !Inits
 X=120, Y=0, S=0
 
@@ -47,8 +54,6 @@ deathinfected = 0.2,
 nmerozoites = 16,
 deathmerozoite = 72
 
-!ExtraFunctions
-
 
 !Equations
 dX <- bonemarrow - deathuninfected*X - infectionrate*X*S
@@ -62,6 +67,6 @@ c('X','L')
 !MAEMOD_End
 "
 
-out2<-maemod.ode(input.text = myeq2,timegrid = seq(0,400,0.1))
+out2<-maemod.ode(input.text = myeq2)
 
 

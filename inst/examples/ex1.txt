@@ -1,3 +1,8 @@
+!MAEMOD_Begin
+STARTTIME <- 0
+STOPTIME <- 20*pi
+DT <- 0.1
+
 !Equations
 dY1<-Y2
 dY2<-a*sin(Y1)+sin(t)
@@ -9,11 +14,7 @@ a= -1.0
 Y1=0,Y2=0
 
 !Outputs
-c(dY1,dY2)
-
-!ExtraFunctions
 
 !Plots
 
 !MAEMOD_End
-

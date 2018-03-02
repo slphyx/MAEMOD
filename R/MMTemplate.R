@@ -5,31 +5,11 @@
 #   Check Package:             'Ctrl + Shift + E'
 #   Test Package:              'Ctrl + Shift + T'
 
-Maemod_ODETEMPLATE2 <- "
-MAEModExtraFunctions
 
+Maemod_ODETEMPLATE <- "
+MAEModBegin
 
-MaemodSYS<-function(t, state, parameters) {
-  with(as.list(c(state, parameters)),{
-
-    MAEModYOUREQ
-
-    list(c( MAEModOUTPUTCOL ))
-  })
-}
-
-
-maemod.parameters<-c( MAEModPARAMETERS )
-
-
-maemod.initstate<-c( MAEModSTATE )
-
-";
-
-Maemod_ODETEMPLATE1 <- "
-MAEModExtraFunctions
-
-
+timegrid <- seq(STARTTIME,STOPTIME,DT)
 MaemodSYS<-function(t, state, parameters) {
   with(as.list(c(state, parameters)),{
 
@@ -47,12 +27,12 @@ maemod.initstate<-c( MAEModSTATE )
 ";
 
 Maemod_Array <- "
-MAEModExtraFunctions
+MAEModBegin
 
 maemod.parameters<-c( MAEModPARAMETERS )
 
 maemod.initstate<-c( MAEModSTATE )
-
+timegrid <- seq(STARTTIME,STOPTIME,DT)
 MaemodSYS<-function(t, state, parameters) {
 
   k<-parameters
@@ -69,7 +49,7 @@ MaemodSYS<-function(t, state, parameters) {
 ";
 
 PasteFunc<-function(inputfunctions, Template){
-  gsub("MAEModExtraFunctions", inputfunctions, Template)
+  gsub("MAEModBegin", inputfunctions, Template)
 }
 
 PasteEQ<-function(inputSys,Template){
@@ -115,7 +95,7 @@ GenEQFN<-function(filename, text=NULL, template=Maemod_ODETEMPLATE1, envir=.Glob
     ## read from input file
 
     extractedstring<-ExtractInputsFromFile(filename)
-    exfnstr<-as.character(extractedstring[extractedstring$keys=='!ExtraFunctions',2])
+    exfnstr<-as.character(extractedstring[extractedstring$keys=='!MAEMOD_Begin',2])
     strExFn<-PasteFunc(exfnstr,Template = template)
 
     eqstr<-as.character(extractedstring[extractedstring$keys=='!Equations',2])
@@ -126,17 +106,22 @@ GenEQFN<-function(filename, text=NULL, template=Maemod_ODETEMPLATE1, envir=.Glob
       strEQ <- PasteEQArray(strEQ)
     }
 
-    outputstr<-as.character(extractedstring[extractedstring$keys=='!Outputs',2])
-    strEQOut<-PasteOutputcol(outputstr,strEQ)
-
     parstr<-as.character(extractedstring[extractedstring$keys=='!Parameters',2])
-    strEQOutPar<-PasteParms(parstr,strEQOut)
+    strEQOutPar<-PasteParms(parstr,strEQ)
 
     initstr<-as.character(extractedstring[extractedstring$keys=='!Inits',2])
     strEQOutParInit<-PasteInit(initstr,strEQOutPar)
 
+    compartments <- RemoveRN(Compartment.Names(initstr))
+    outputstr<-RemoveRN(as.character(extractedstring[extractedstring$keys=='!Outputs',2]))
+    if(!is.null(eval(parse(text = outputstr))))
+      all.outputstr <- paste0(compartments,",",outputstr)
+    else
+      all.outputstr <- compartments
+    strEQOut<-PasteOutputcol(all.outputstr,strEQOutParInit)
 
-    write(strEQOutParInit,file = "MAEMODSys.inp")
+
+    write(strEQOut,file = "MAEMODSys.inp")
     eval(parse(file = "MAEMODSys.inp"),envir=envir)
   }
   else{
@@ -145,7 +130,7 @@ GenEQFN<-function(filename, text=NULL, template=Maemod_ODETEMPLATE1, envir=.Glob
     KW<-KeyWordsPosition(text)
     extractedstring<-ExtractInputs(KW,text)
 
-    exfnstr<-as.character(extractedstring[extractedstring$keys=='!ExtraFunctions',2])
+    exfnstr<-as.character(extractedstring[extractedstring$keys=='!MAEMOD_Begin',2])
     strExFn<-PasteFunc(exfnstr,Template = template)
 
     eqstr<-as.character(extractedstring[extractedstring$keys=='!Equations',2])
@@ -156,17 +141,23 @@ GenEQFN<-function(filename, text=NULL, template=Maemod_ODETEMPLATE1, envir=.Glob
       strEQ <- PasteEQArray(strEQ)
     }
 
-    outputstr<-as.character(extractedstring[extractedstring$keys=='!Outputs',2])
-    strEQOut<-PasteOutputcol(outputstr,strEQ)
-
     parstr<-as.character(extractedstring[extractedstring$keys=='!Parameters',2])
-    strEQOutPar<-PasteParms(parstr,strEQOut)
+    strEQOutPar<-PasteParms(parstr,strEQ)
 
     initstr<-as.character(extractedstring[extractedstring$keys=='!Inits',2])
     strEQOutParInit<-PasteInit(initstr,strEQOutPar)
 
 
-    write(strEQOutParInit,file = "MAEMODSys.inp")
+    compartments <- RemoveRN(Compartment.Names(initstr))
+    outputstr<- RemoveRN(as.character(extractedstring[extractedstring$keys=='!Outputs',2]))
+    if(!is.null(eval(parse(text = outputstr))))
+      all.outputstr <- paste0(compartments,",",outputstr)
+    else
+      all.outputstr <- compartments
+    strEQOut<-PasteOutputcol(all.outputstr,strEQOutParInit)
+
+
+    write(strEQOut,file = "MAEMODSys.inp")
     eval(parse(file = "MAEMODSys.inp"),envir=envir)
 
   }

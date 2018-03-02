@@ -19,7 +19,10 @@
 #
 
 arrayEx <-'
-!ExtraFunctions
+!MAEMOD_Begin
+STARTTIME <- 0
+STOPTIME <- 20
+DT <- 0.2
 n<-14
 
 !Equations
@@ -44,7 +47,7 @@ c(dA)
 
 !MAEMOD_End
 '
-out<-maemod.ode(input.text = arrayEx ,timegrid = seq(0,20,0.02),sys.template = Maemod_Array)
+out<-maemod.ode(input.text = arrayEx , sys.template = Maemod_Array)
 plot(out[,c(1,2)],type = 'l')
 cols<-rainbow(14)
 for(i in 3:n) lines(out[,c(1,i)],col=cols[i])
