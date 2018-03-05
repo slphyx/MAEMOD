@@ -89,7 +89,7 @@ PasteInit<-function(initstate,Template){
 
 #generate the equation function
 #extractedstring is the output from ExtractInputs or ExtractInputsFromFile
-GenEQFN<-function(filename, text=NULL, template=Maemod_ODETEMPLATE1, envir=.GlobalEnv){
+GenEQFN<-function(filename, text=NULL, template=Maemod_ODETEMPLATE, envir=.GlobalEnv){
 
   if(is.null(text)){
     ## read from input file
@@ -112,14 +112,28 @@ GenEQFN<-function(filename, text=NULL, template=Maemod_ODETEMPLATE1, envir=.Glob
     initstr<-as.character(extractedstring[extractedstring$keys=='!Inits',2])
     strEQOutParInit<-PasteInit(initstr,strEQOutPar)
 
-    compartments <- RemoveRN(Compartment.Names(initstr))
-    outputstr<-RemoveRN(as.character(extractedstring[extractedstring$keys=='!Outputs',2]))
-    if(!is.null(eval(parse(text = outputstr))))
-      all.outputstr <- paste0(compartments,",",outputstr)
-    else
-      all.outputstr <- compartments
-    strEQOut<-PasteOutputcol(all.outputstr,strEQOutParInit)
+    if(template==Maemod_ODETEMPLATE){
+      compartments <- RemoveRN(Compartment.Names(initstr))
+      outputstr<-RemoveRN(as.character(extractedstring[extractedstring$keys=='!Outputs',2]))
 
+      if(!is.null(eval(parse(text = outputstr))))
+        all.outputstr <- paste0(compartments,",",outputstr)
+      else
+        all.outputstr <- compartments
+
+      strEQOut<-PasteOutputcol(all.outputstr,strEQOutParInit)
+    }else{
+      #using array template
+      compartments <- 'c(dA)'
+      outputstr<-RemoveRN(as.character(extractedstring[extractedstring$keys=='!Outputs',2]))
+
+      if(!is.null(eval(parse(text = outputstr))))
+        all.outputstr <- paste0(compartments,",",outputstr)
+      else
+        all.outputstr <- compartments
+
+      strEQOut<-PasteOutputcol(all.outputstr,strEQOutParInit)
+    }
 
     write(strEQOut,file = "MAEMODSys.inp")
     eval(parse(file = "MAEMODSys.inp"),envir=envir)
@@ -148,13 +162,28 @@ GenEQFN<-function(filename, text=NULL, template=Maemod_ODETEMPLATE1, envir=.Glob
     strEQOutParInit<-PasteInit(initstr,strEQOutPar)
 
 
-    compartments <- RemoveRN(Compartment.Names(initstr))
-    outputstr<- RemoveRN(as.character(extractedstring[extractedstring$keys=='!Outputs',2]))
-    if(!is.null(eval(parse(text = outputstr))))
-      all.outputstr <- paste0(compartments,",",outputstr)
-    else
-      all.outputstr <- compartments
-    strEQOut<-PasteOutputcol(all.outputstr,strEQOutParInit)
+    if(template==Maemod_ODETEMPLATE){
+      compartments <- RemoveRN(Compartment.Names(initstr))
+      outputstr<-RemoveRN(as.character(extractedstring[extractedstring$keys=='!Outputs',2]))
+
+      if(!is.null(eval(parse(text = outputstr))))
+        all.outputstr <- paste0(compartments,",",outputstr)
+      else
+        all.outputstr <- compartments
+
+      strEQOut<-PasteOutputcol(all.outputstr,strEQOutParInit)
+    }else{
+      #using array template
+      compartments <- 'c(dA)'
+      outputstr<-RemoveRN(as.character(extractedstring[extractedstring$keys=='!Outputs',2]))
+
+      if(!is.null(eval(parse(text = outputstr))))
+        all.outputstr <- paste0(compartments,",",outputstr)
+      else
+        all.outputstr <- compartments
+
+      strEQOut<-PasteOutputcol(all.outputstr,strEQOutParInit)
+    }
 
 
     write(strEQOut,file = "MAEMODSys.inp")
