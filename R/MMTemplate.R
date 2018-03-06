@@ -116,7 +116,8 @@ GenEQFN<-function(filename, text=NULL, template=Maemod_ODETEMPLATE, envir=.Globa
       compartments <- RemoveRN(Compartment.Names(initstr))
       outputstr<-RemoveRN(as.character(extractedstring[extractedstring$keys=='!Outputs',2]))
 
-      if(!is.null(eval(parse(text = outputstr))))
+      #if(!is.null(eval(parse(text = outputstr))))
+      if(grepl("^\\s*$",outputstr)==F)
         all.outputstr <- paste0(compartments,",",outputstr)
       else
         all.outputstr <- compartments
@@ -127,7 +128,8 @@ GenEQFN<-function(filename, text=NULL, template=Maemod_ODETEMPLATE, envir=.Globa
       compartments <- 'c(dA)'
       outputstr<-RemoveRN(as.character(extractedstring[extractedstring$keys=='!Outputs',2]))
 
-      if(!is.null(eval(parse(text = outputstr))))
+      #if(!is.null(eval(parse(text = outputstr))))
+      if(grepl("^\\s*$",outputstr)==F)
         all.outputstr <- paste0(compartments,",",outputstr)
       else
         all.outputstr <- compartments
@@ -166,7 +168,8 @@ GenEQFN<-function(filename, text=NULL, template=Maemod_ODETEMPLATE, envir=.Globa
       compartments <- RemoveRN(Compartment.Names(initstr))
       outputstr<-RemoveRN(as.character(extractedstring[extractedstring$keys=='!Outputs',2]))
 
-      if(!is.null(eval(parse(text = outputstr))))
+      #if(!is.null(eval(parse(text = outputstr))))
+      if(grepl("^\\s*$",outputstr)==F)
         all.outputstr <- paste0(compartments,",",outputstr)
       else
         all.outputstr <- compartments
@@ -177,7 +180,8 @@ GenEQFN<-function(filename, text=NULL, template=Maemod_ODETEMPLATE, envir=.Globa
       compartments <- 'c(dA)'
       outputstr<-RemoveRN(as.character(extractedstring[extractedstring$keys=='!Outputs',2]))
 
-      if(!is.null(eval(parse(text = outputstr))))
+      #if(!is.null(eval(parse(text = outputstr))))
+      if(grepl("^\\s*$",outputstr)==F)
         all.outputstr <- paste0(compartments,",",outputstr)
       else
         all.outputstr <- compartments
