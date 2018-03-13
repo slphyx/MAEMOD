@@ -1,5 +1,5 @@
 # wrapper function for deSolve::ode
-maemod.ode<-function(input.filename, input.text=NULL, export.par=NULL,sys.template=Maemod_ODETEMPLATE,envir=.GlobalEnv,...){
+maemod.ode<-function(input.filename, input.text=NULL, export.par=NULL,sys.template=Maemod_ODETEMPLATE,envir=.GlobalEnv, times=NULL, init.state=NULL,...){
 
   vars4plot<-NULL
 
@@ -11,7 +11,21 @@ maemod.ode<-function(input.filename, input.text=NULL, export.par=NULL,sys.templa
     if(!exists("timegrid")){
       stop('timegrid cannot be created. Please check STARTTIME, STOPTIME and DT.')
     }
-    out<-ode(y=maemod.initstate,times=timegrid,func=MaemodSYS,parms=maemod.parameters, ...)
+
+    if(is.null(times)){
+      temp.times <- timegrid
+    }else{
+      temp.times <- times
+    }
+
+    if(is.null(init.state)){
+      temp.init.state <- maemod.initstate
+    }else{
+      temp.init.state <- init.state
+    }
+
+
+    out<-ode(y=temp.init.state,times=temp.times,func=MaemodSYS,parms=maemod.parameters, ...)
     if(!is.null(vars4plot)){
       plot(out, select = vars4plot, type='l')
     }
@@ -24,7 +38,21 @@ maemod.ode<-function(input.filename, input.text=NULL, export.par=NULL,sys.templa
     if(!exists("timegrid")){
       stop('timegrid cannot be created. Please check STARTTIME, STOPTIME and DT.')
     }
-    out<-ode(y=maemod.initstate,times=timegrid,func=MaemodSYS,parms=maemod.parameters, ...)
+
+    if(is.null(times)){
+      temp.times <- timegrid
+    }else{
+      temp.times <- times
+    }
+
+    if(is.null(init.state)){
+      temp.init.state <- maemod.initstate
+    }else{
+      temp.init.state <- init.state
+    }
+
+
+    out<-ode(y=temp.init.state,times=temp.times,func=MaemodSYS,parms=maemod.parameters, ...)
     if(!is.null(vars4plot)){
       plot(out, select = vars4plot, type='l')
     }
