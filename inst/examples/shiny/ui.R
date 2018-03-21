@@ -30,7 +30,11 @@ fluidPage(
               )
             ),
           fluidRow(
-            plotOutput("graphs")
+            column(1,NULL),
+            column(10,
+              plotOutput("graphs")
+            ),
+            column(1,NULL)
             )
           )
 )
