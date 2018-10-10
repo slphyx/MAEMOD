@@ -32,10 +32,10 @@ deathinfected = 0.2,
 nmerozoites = 16,
 deathmerozoite = 72
 
-!Inits      #initial value of each compartment
+!Inits 
 X=120, Y=0, S=0
 
-!Outputs    #additional outputs
+!Outputs 
 U=U
 
 
@@ -189,7 +189,7 @@ a = 21.5/1000/365,
            am= 1/10,
            vm=30
            
-!Inits      #initial value of each compartment
+!Inits      
 Sh=98900, 
 Es=0,
 Ia=100, 
@@ -202,7 +202,7 @@ Sm=100000000,
 Em=0,
 Im=1000
 
-!Outputs    #additional outputs
+!Outputs    
 Nh=Nh,Nm=Nm,Inc=inc, prev=prev
 
 !Plots
