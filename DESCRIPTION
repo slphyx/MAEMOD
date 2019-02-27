@@ -6,6 +6,6 @@ Author: Sompob Saralamba, Lisa White
 Maintainer: Sompob Saralamba <saralamba@gmail.com>
 Description: maemod is a simple version of deSolve::ode.
 Depends: R (>= 2.15.0), deSolve
-Imports: deSolve
+Imports: deSolve, stringr
 License: MIT License
 LazyData: TRUE
